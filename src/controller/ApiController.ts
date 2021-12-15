@@ -1,8 +1,7 @@
 import { Request, Response } from "express"
 import { ApiBusiness } from "../business/ApiBusiness"
-import { OrderInputDTO } from "../model/Order"
-
 export class ApiController {
+
     async getInventory(req: Request, res: Response) {
         try {
             const apiBusiness = new ApiBusiness()
@@ -17,20 +16,21 @@ export class ApiController {
 
     async newOrder(req: Request, res: Response) {
         try {
-            const input: OrderInputDTO = {
-                name: req.body.client_name,
-                delivery_time: req.body.delivery_time,
-                request_time: req.body.request_time,
-                amount: req.body.request_time
-            }
+            const { products, amount, client_name, delivery_date } = req.body
+            const order = { client_name, delivery_date, amount }
 
             const apiBusiness = new ApiBusiness()
-            const result = await apiBusiness.newOrder(input)
-            res.status(200).send({message: "Novo pedido feito adicionado!", result})
+
+            await apiBusiness.verifyStock(products, amount)
+            const order_id = await apiBusiness.createOrder(order)
+            await apiBusiness.createOrderDetail(products, order_id)
+
+            res.status(200).send({ message: "ESTOQUE FUNCIONANDO" })
 
         } catch (err: unknown) {
             if (err instanceof Error)
                 return res.status(400).send(err.message)
         }
     }
+
 }

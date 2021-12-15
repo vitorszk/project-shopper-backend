@@ -11,6 +11,6 @@ app.use(express.json())
 app.use(cors())
 app.use("", apiRouter)
 
-app.listen(process.env.PORT || 3003, function(this: any){
-   console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
- });
+app.listen(process.env.PORT || 3003, function (this: any) {
+  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+});

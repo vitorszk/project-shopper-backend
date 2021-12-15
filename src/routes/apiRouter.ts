@@ -5,3 +5,4 @@ export const apiRouter = express.Router()
 const apiController = new ApiController()
 
 apiRouter.get("/inventory", apiController.getInventory)
+apiRouter.post("/new-order", apiController.newOrder)
